@@ -7,6 +7,8 @@ import exception.WrongReportReasonException;
 import java.util.HashMap;
 import java.util.Map;
 
+// Leonardo Pantani | Java project for PR2 course at UNIPI
+
 public interface ReportInterface {
     /**
      * Crea una mappa con tutti i motivi di default della segnalazione impostati a 0

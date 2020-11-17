@@ -1,5 +1,7 @@
 package app;
 
+// Leonardo Pantani | Java project for PR2 course at UNIPI
+
 public interface PostInterface {
     /**
      * Getter dell'id

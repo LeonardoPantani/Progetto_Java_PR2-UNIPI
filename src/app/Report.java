@@ -7,6 +7,8 @@ import exception.WrongReportReasonException;
 import java.lang.invoke.WrongMethodTypeException;
 import java.util.Map;
 
+// Leonardo Pantani | Java project for PR2 course at UNIPI
+
 public class Report implements ReportInterface {
     /*
      *  OVERVIEW:

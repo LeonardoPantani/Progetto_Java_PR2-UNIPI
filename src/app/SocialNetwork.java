@@ -11,6 +11,8 @@ import static java.util.Map.Entry.comparingByValue;
 import static java.util.stream.Collectors.toMap;
 import static java.util.Collections.reverseOrder;
 
+// Leonardo Pantani | Java project for PR2 course at UNIPI
+
 public class SocialNetwork implements SocialNetworkInterface {
     /*
      *  OVERVIEW:

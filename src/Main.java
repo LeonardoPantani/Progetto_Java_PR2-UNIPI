@@ -7,6 +7,8 @@ import exception.TextLengthException;
 import java.lang.invoke.WrongMethodTypeException;
 import java.util.*;
 
+// Leonardo Pantani | Java project for PR2 course at UNIPI
+
 public class Main {
     public static void main(String[] args) throws Exception {
         System.out.println("__________________________");

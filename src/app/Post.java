@@ -3,6 +3,8 @@ package app;
 import exception.EmptyFieldException;
 import exception.TextLengthException;
 
+// Leonardo Pantani | Java project for PR2 course at UNIPI
+
 public final class Post implements PostInterface {
     /*
      *  OVERVIEW:

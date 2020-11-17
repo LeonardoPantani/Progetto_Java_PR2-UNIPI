@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+// Leonardo Pantani | Java project for PR2 course at UNIPI
+
 public interface SocialNetworkInterface {
     /**
      * Restituisce la rete sociale derivata dalla lista di post (parametro del metodo)

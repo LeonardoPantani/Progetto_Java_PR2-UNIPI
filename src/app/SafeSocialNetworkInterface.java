@@ -7,6 +7,8 @@ import exception.WrongReportReasonException;
 
 import java.util.Map;
 
+// Leonardo Pantani | Java project for PR2 course at UNIPI
+
 public interface SafeSocialNetworkInterface {
     /**
      * Segnala un post (parametro del metodo).

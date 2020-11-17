@@ -11,6 +11,8 @@ import java.util.*;
 import static java.util.Map.Entry.comparingByValue;
 import static java.util.stream.Collectors.toMap;
 
+// Leonardo Pantani | Java project for PR2 course at UNIPI
+
 public class SafeSocialNetwork extends SocialNetwork implements SafeSocialNetworkInterface {
     /*
      *  OVERVIEW:
@@ -172,7 +174,9 @@ public class SafeSocialNetwork extends SocialNetwork implements SafeSocialNetwor
         for(Post p : new ArrayList<>(ps)) {
             if(getReports(p) > 0) {
                 ps.remove(p);
-                deleteReport(p.getId());
+                if(deleteReport(p.getId()) == 0) { // errore imprevisto
+                    throw new NoSuchFieldError();
+                }
                 removeCount++;
             }
         }
@@ -191,7 +195,9 @@ public class SafeSocialNetwork extends SocialNetwork implements SafeSocialNetwor
         for(Post p : new ArrayList<>(ps)) {
             if(getReports(p) >= minReports) {
                 ps.remove(p);
-                deleteReport(p.getId());
+                if(deleteReport(p.getId()) == 0) { // errore imprevisto
+                    throw new NoSuchFieldError();
+                }
                 removeCount++;
             }
         }
