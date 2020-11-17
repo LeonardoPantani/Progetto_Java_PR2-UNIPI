@@ -1,0 +1,10 @@
+# ELEMENTI DA IGNORARE NEL COMMIT
+#
+# Files:
+*.iml
+*.class
+.DS_Store
+
+# Cartelle:
+out/
+.idea/
