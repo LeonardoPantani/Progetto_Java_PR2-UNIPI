@@ -1,6 +1,7 @@
 package app;
 
 import exception.EmptyFieldException;
+import exception.InvalidUsernameException;
 import exception.UserNotFoundException;
 
 import java.util.*;
@@ -41,8 +42,11 @@ public class SocialNetwork implements SocialNetworkInterface {
     protected final Map<String, Set<String>> followed;
     protected final List<Post> ps;
 
-    private final String PREFIX_CHECK_MENTION = "@";
-    private final String REGEX_CHECK_MENTION = "\\B"+PREFIX_CHECK_MENTION+"(?!(?:[a-z0-9.]*_){2})(?!(?:[a-z0-9_]*\\.){2})[._a-z0-9]{3,24}\\b";
+    private static final int MIN_USERNAME_LENGTH = 3;
+    private static final int MAX_USERNAME_LENGTH = 24;
+
+    private static final String PREFIX_CHECK_MENTION = "@";
+    private static final String REGEX_CHECK_MENTION = "\\B"+PREFIX_CHECK_MENTION+"(?!(?:[a-z0-9.]*_){2})(?!(?:[a-z0-9_]*\\.){2})[._a-z0-9]{"+MIN_USERNAME_LENGTH+","+MAX_USERNAME_LENGTH+"}\\b";
 
 
 
@@ -113,7 +117,7 @@ public class SocialNetwork implements SocialNetworkInterface {
      * @return lista degli utenti menzionati
      */
     public Set<String> getMentionedUsers() {
-        // minimo 3 caratteri - massimo 24 caratteri
+        // minimo MIN_USERNAME_LENGTH caratteri - massimo MAX_USERNAME_LENGTH caratteri
         Pattern pattern = Pattern.compile(REGEX_CHECK_MENTION, Pattern.CASE_INSENSITIVE);
         Matcher matcher;
 
@@ -134,7 +138,7 @@ public class SocialNetwork implements SocialNetworkInterface {
      * @return lista degli utenti menzionati nei post dentro la lista "ps"
      */
     public Set<String> getMentionedUsers(List<Post> ps) {
-        // minimo 3 caratteri - massimo 24 caratteri
+        // minimo MIN_USERNAME_LENGTH caratteri - massimo MAX_USERNAME_LENGTH caratteri
         Pattern pattern = Pattern.compile(REGEX_CHECK_MENTION, Pattern.CASE_INSENSITIVE);
         Matcher matcher;
 
@@ -332,8 +336,10 @@ public class SocialNetwork implements SocialNetworkInterface {
      * @param username il nome dell'utente da creare
      * @param set il set di persone che username segue
      */
-    public void initializeUser(String username, Set<String> set) {
-        followed.put(username, set);
+    public void initializeUser(String username, Set<String> set) throws InvalidUsernameException {
+        if(validateUsername(username)) {
+            followed.put(username, set);
+        }
     }
 
     /**
@@ -370,6 +376,16 @@ public class SocialNetwork implements SocialNetworkInterface {
                 System.out.println(entry.getKey() + " ha " + entry.getValue().size() + " followers");
             else
                 System.out.println(entry.getKey() + " ha 0 followers");
+        }
+    }
+
+    static public boolean validateUsername(String username) throws InvalidUsernameException {
+        if(username.length() < MIN_USERNAME_LENGTH || username.length() > MAX_USERNAME_LENGTH) {
+            throw new InvalidUsernameException();
+        } else {
+            Pattern pattern = Pattern.compile("[A-Za-z0-9_.]+", Pattern.CASE_INSENSITIVE);
+
+            return pattern.matcher(username).matches();
         }
     }
 }

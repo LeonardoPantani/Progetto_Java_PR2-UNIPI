@@ -205,17 +205,12 @@ public class SafeSocialNetwork extends SocialNetwork implements SafeSocialNetwor
         return removeCount;
     }
 
-
-    // ------------------------------
-    // METODI PRIVATI/PROTETTI
-    // ------------------------------
-
     /**
      * Elimina i report assegnati al post con id post_id dalla lista
      * @param post_id l'id del post da cui cancellare i report
      * @return la quantità di elementi rimossi
      */
-    private int deleteReport(int post_id) {
+    public int deleteReport(int post_id) {
         int removeCount = 0;
 
         for(Report r : new ArrayList<>(rp)) {
