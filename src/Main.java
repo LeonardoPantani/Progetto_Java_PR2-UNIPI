@@ -18,7 +18,7 @@ public class Main {
         SafeSocialNetwork sn = new SafeSocialNetwork(); // inizializzazione social network (con metodi di segnalazione)
         try {
             executeTest(sn);
-            System.out.println("[☑] Test completati con successo!");
+            System.out.println("[OK] Test completati con successo!");
         } catch(TestException e) {
             System.out.println("[!] Errore durante il test: " + e.getMessage());
             System.exit(-2);
@@ -160,7 +160,7 @@ public class Main {
         }
 
         sn.reportPost(post5, "spam_misleading_content"); // REPORT 1
-        System.out.println("TEST REPORTPOST NORMAL> ☑");
+        System.out.println("TEST REPORTPOST NORMAL> OK");
 
         try {
             sn.reportPost(null, "custom", "Mi ha fregato!");
@@ -177,7 +177,7 @@ public class Main {
         sn.reportPost(post5, "custom", "Mi ha fregato!"); // REPORT 2
 
         if(sn.getReports(post5) == 2) {
-            System.out.println("TEST GETREPORTS> ☑");
+            System.out.println("TEST GETREPORTS> OK");
         } else {
             throw new TestException("TEST GETREPORTS> ERRORE: "+ sn.getReports(post5) + " invece di 5!");
         }
@@ -195,7 +195,7 @@ public class Main {
 
         int post_rimossi = sn.removeReportedPosts(2);
         if(post_rimossi == 1) {
-            System.out.println("TEST REMOVEREPORTEDPOSTS 2> ☑");
+            System.out.println("TEST REMOVEREPORTEDPOSTS 2> OK");
         } else {
             throw new TestException("TEST REMOVEREPORTEDPOSTS 2> ERRORE: " + post_rimossi + " invece di 1!");
         }
@@ -203,7 +203,7 @@ public class Main {
         sn.reportPost(post3, "violent_content"); // REPORT 4
         post_rimossi = sn.removeReportedPosts();
         if(post_rimossi == 2) {
-            System.out.println("TEST REMOVEREPORTEDPOSTS 1> ☑");
+            System.out.println("TEST REMOVEREPORTEDPOSTS 1> OK");
         } else {
             throw new TestException("TEST REMOVEREPORTEDPOSTS 1> ERRORE: " + post_rimossi + " invece di 2!");
         }
