@@ -3,7 +3,6 @@ package app;
 import exception.EmptyFieldException;
 import exception.PostNotFoundException;
 import exception.TextLengthException;
-import exception.WrongReportReasonException;
 
 import java.util.Map;
 
@@ -16,16 +15,16 @@ public interface SafeSocialNetworkInterface {
      * @param reason il motivo di segnalazione del post
      * @throws PostNotFoundException se il post specificato non è nella lista dei post nel social network
      */
-    void reportPost(Post post, String reason) throws PostNotFoundException, WrongReportReasonException;
+    void reportPost(Post post, ReportReason reason) throws PostNotFoundException;
 
     /**
      * Segnala un post con la segnalazione personalizzata (parametro del metodo).
      * @param post il post da segnalare
-     * @param reason il motivo di segnalazione del post (deve essere per forza "custom" con questo metodo
+     * @param reason il motivo di segnalazione del post (deve essere per forza "custom" con questo metodo)
      * @param text il motivo personalizzato
      * @throws PostNotFoundException se il post specificato non è nella lista dei post nel social network
      */
-    void reportPost(Post post, String reason, String text) throws PostNotFoundException, TextLengthException;
+    void reportPost(Post post, ReportReason reason, String text) throws PostNotFoundException, TextLengthException;
 
     /**
      * Restituisce il numero di report assegnati ad un post (parametro del metodo)

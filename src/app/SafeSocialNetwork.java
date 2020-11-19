@@ -3,7 +3,6 @@ package app;
 import exception.EmptyFieldException;
 import exception.PostNotFoundException;
 import exception.TextLengthException;
-import exception.WrongReportReasonException;
 
 import java.lang.invoke.WrongMethodTypeException;
 import java.util.*;
@@ -47,13 +46,13 @@ public class SafeSocialNetwork extends SocialNetwork implements SafeSocialNetwor
      * @param reason il motivo di segnalazione del post
      * @throws PostNotFoundException se il post specificato non è nella lista dei post nel social network
      */
-    public void reportPost(Post post, String reason) throws PostNotFoundException, WrongReportReasonException {
+    public void reportPost(Post post, ReportReason reason) throws PostNotFoundException {
         if(post == null) {
             throw new NullPointerException();
         } else {
             if(checkPost(post)) {
                 Report segnalazione = new Report(post.getId());
-                if(reason.equals("custom")) {
+                if(reason == ReportReason.custom) {
                     throw new WrongMethodTypeException("Usare il metodo reportPost specificando anche il testo della segnalazione custom!");
                 } else {
                     segnalazione.setReport(reason);
@@ -72,13 +71,13 @@ public class SafeSocialNetwork extends SocialNetwork implements SafeSocialNetwor
      * @param text il motivo personalizzato
      * @throws PostNotFoundException se il post specificato non è nella lista dei post nel social network
      */
-    public void reportPost(Post post, String reason, String text) throws PostNotFoundException, TextLengthException {
+    public void reportPost(Post post, ReportReason reason, String text) throws PostNotFoundException, TextLengthException {
         if(post == null) {
             throw new NullPointerException();
         } else {
             if (checkPost(post)) {
                 Report segnalazione = new Report(post.getId());
-                if (reason.equals("custom")) {
+                if (reason == ReportReason.custom) {
                     segnalazione.setCustomReport(text);
                     rp.add(segnalazione);
                 } else {

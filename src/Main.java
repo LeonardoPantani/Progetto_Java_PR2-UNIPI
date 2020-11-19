@@ -1,4 +1,6 @@
 import app.Post;
+import app.Report;
+import app.ReportReason;
 import app.SafeSocialNetwork;
 import exception.EmptyFieldException;
 import exception.TestException;
@@ -148,33 +150,33 @@ public class Main {
         sn.addPost(post5);
 
         try {
-            sn.reportPost(null, "spam_misleading_content");
+            sn.reportPost(null, ReportReason.spam_misleading_content);
         } catch(NullPointerException e) {
             System.out.println("TEST REPORTPOST NORMAL NULL> Eccezione catturata ☑");
         }
 
         try {
-            sn.reportPost(post5, "custom");
+            sn.reportPost(post5, ReportReason.custom);
         } catch(WrongMethodTypeException e) {
             System.out.println("TEST REPORTPOST NORMAL CUSTOM ERRATO> Eccezione catturata ☑");
         }
 
-        sn.reportPost(post5, "spam_misleading_content"); // REPORT 1
+        sn.reportPost(post5, ReportReason.spam_misleading_content); // REPORT 1
         System.out.println("TEST REPORTPOST NORMAL> OK");
 
         try {
-            sn.reportPost(null, "custom", "Mi ha fregato!");
+            sn.reportPost(null, ReportReason.custom, "Mi ha fregato!");
         } catch(NullPointerException e) {
             System.out.println("TEST REPORTPOST NORMAL NULL> Eccezione catturata ☑");
         }
 
         try {
-            sn.reportPost(post5, "spam_misleading_content", "Mi ha fregato!");
+            sn.reportPost(post5, ReportReason.spam_misleading_content, "Mi ha fregato!");
         } catch(WrongMethodTypeException e) {
             System.out.println("TEST REPORTPOST WRONG CUSTOM ERRATO> Eccezione catturata ☑");
         }
 
-        sn.reportPost(post5, "custom", "Mi ha fregato!"); // REPORT 2
+        sn.reportPost(post5, ReportReason.custom, "Mi ha fregato!"); // REPORT 2
 
         if(sn.getReports(post5) == 2) {
             System.out.println("TEST GETREPORTS> OK");
@@ -187,7 +189,7 @@ public class Main {
             System.out.println(entry.getKey()+ " (" + entry.getValue() + " segnalazioni/e)");
         }
 
-        sn.reportPost(post2, "hateful_content"); // REPORT 3
+        sn.reportPost(post2, ReportReason.hateful_content); // REPORT 3
         System.out.println("TEST MOSTREPORTEDPOSTS 2>");
         for(Map.Entry<Post, Integer> entry: sn.getMostReportedPosts(2).entrySet()) {
             System.out.println(entry.getKey()+ " (" + entry.getValue() + " segnalazioni/e)");
@@ -200,7 +202,7 @@ public class Main {
             throw new TestException("TEST REMOVEREPORTEDPOSTS 2> ERRORE: " + post_rimossi + " invece di 1!");
         }
 
-        sn.reportPost(post3, "violent_content"); // REPORT 4
+        sn.reportPost(post3, ReportReason.violent_content); // REPORT 4
         post_rimossi = sn.removeReportedPosts();
         if(post_rimossi == 2) {
             System.out.println("TEST REMOVEREPORTEDPOSTS 1> OK");

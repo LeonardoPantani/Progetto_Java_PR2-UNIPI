@@ -10,8 +10,8 @@ public final class Post implements PostInterface {
      *  OVERVIEW:
      *      Rappresentazione di un post che ogni utente può inviare con una limitazione
      *      sui caratteri che possono essere inviati (massimo 140). Questa classe
-     *      include, oltre che hai metodi classici quali costruttore getter & setter, anche
-     *      un metodo toString per convertire il post in formato visualizzabile e un metodo clone.
+     *      include, oltre che hai metodi classici quali costruttore getter & setter e anche
+     *      un metodo toString per convertire il post in formato visualizzabile.
      *      L'oggetto Post è immutabile (non modificabile dall'esterno)
      *
      *  ABSTRACTION FUNCTION:
@@ -124,13 +124,5 @@ public final class Post implements PostInterface {
                 ", text='" + text + '\'' +
                 ", timestamp=" + timestamp +
                 '}';
-    }
-
-    /**
-     * Restituisce una copia del post attuale
-     * @return copia del post
-     */
-    public Post clone() {
-        return new Post(this);
     }
 }

@@ -2,9 +2,9 @@ package app;
 
 import exception.EmptyFieldException;
 import exception.TextLengthException;
-import exception.WrongReportReasonException;
 
 import java.lang.invoke.WrongMethodTypeException;
+import java.util.HashMap;
 import java.util.Map;
 
 // Leonardo Pantani | Java project for PR2 course at UNIPI
@@ -33,7 +33,7 @@ public class Report implements ReportInterface {
      */
 
     private final int post_id;
-    private Map<String, Integer> reports;
+    private Map<ReportReason, Integer> reports;
     private String custom_report;
 
     // lunghezza massima del report custom
@@ -45,7 +45,7 @@ public class Report implements ReportInterface {
      */
     public Report(int post_id) {
         this.post_id = post_id;
-        this.reports = ReportInterface.getDefaultReports();
+        this.reports = getDefaultReports();
         custom_report = null;
     }
 
@@ -64,14 +64,30 @@ public class Report implements ReportInterface {
 
 
     /**
+     * Crea una mappa con tutti i motivi di default della segnalazione impostati a 0
+     * @return map con tutti i motivi impostati
+     */
+    static Map<ReportReason, Integer> getDefaultReports() {
+        Map<ReportReason, Integer> mappa = new HashMap<>();
+
+        mappa.put(ReportReason.violent_content, 0);
+        mappa.put(ReportReason.hateful_content, 0);
+        mappa.put(ReportReason.sexual_content, 0);
+        mappa.put(ReportReason.scam_attempt, 0);
+        mappa.put(ReportReason.promotes_terrorism, 0);
+        mappa.put(ReportReason.spam_misleading_content, 0);
+        mappa.put(ReportReason.copyright_issue, 0);
+        mappa.put(ReportReason.custom, 0); // se viene impostato a 1 legge il valore della stringa custom_report
+
+        return mappa;
+    }
+
+    /**
      * Imposta il motivo della segnalazione specificato ad 1
      * @param type il tipo di segnalazione che si vuole impostare
-     * @throws WrongReportReasonException se il motivo specificato non è valido
      */
-    public void setReport(String type) throws WrongReportReasonException {
-        if(reports.get(type) == null) {
-            throw new WrongReportReasonException();
-        } else if(type.equals("custom")) {
+    public void setReport(ReportReason type) {
+        if(type == ReportReason.custom) {
             throw new WrongMethodTypeException("Usare il metodo setCustomReport per mandare una segnalazione custom!");
         } else {
             reports.put(type, 1);
@@ -87,7 +103,7 @@ public class Report implements ReportInterface {
         if(text.length() > MAX_CUSTOM_TEXT_LENGTH) {
             throw new TextLengthException(MAX_CUSTOM_TEXT_LENGTH);
         } else {
-            reports.put("custom", 1);
+            reports.put(ReportReason.custom, 1);
             this.custom_report = text;
         }
     }
@@ -104,7 +120,7 @@ public class Report implements ReportInterface {
      * Restituisce tutti i motivi della segnalazione (quelli impostati a 1 sono utilizzati)
      * @return restituisce tutti i motivi della segnalazione
      */
-    public Map<String, Integer> getReports() {
+    public Map<ReportReason, Integer> getReports() {
         return reports;
     }
 
@@ -115,7 +131,7 @@ public class Report implements ReportInterface {
     public int getReportNumber() {
         int somma = 0;
 
-        for(Map.Entry<String, Integer> entry : reports.entrySet()) {
+        for(Map.Entry<ReportReason, Integer> entry : reports.entrySet()) {
             somma += entry.getValue();
         }
 
@@ -126,7 +142,7 @@ public class Report implements ReportInterface {
      * Imposta manualmente i motivi della segnalazione del post
      * @param reports mappa contenente i motivi della segnalazione
      */
-    public void setReports(Map<String, Integer> reports) {
+    public void setReports(Map<ReportReason, Integer> reports) {
         this.reports = reports;
     }
 
@@ -152,13 +168,5 @@ public class Report implements ReportInterface {
             ", reports=" + reports +
             ", custom_report='" + custom_report + '\'' +
             '}';
-    }
-
-    /**
-     * Restituisce una copia del report attuale
-     * @return copia del report
-     */
-    public Report clone() {
-        return new Report(this);
     }
 }

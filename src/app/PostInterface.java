@@ -32,10 +32,4 @@ public interface PostInterface {
      * @return post formato visualizzabile
      */
     String toString();
-
-    /**
-     * Restituisce una copia del post attuale
-     * @return copia del post
-     */
-    Post clone();
 }
