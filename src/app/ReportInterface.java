@@ -11,13 +11,17 @@ public interface ReportInterface {
     /**
      * Imposta il motivo della segnalazione specificato ad 1
      * @param type il tipo di segnalazione che si vuole impostare
+     * @modifies this.reports
+     * @effects report(this.reports) = pre(this.reports[type] = 1)
      */
     void setReport(ReportReason type);
 
     /**
      * Imposta un motivo della segnalazione custom
      * @param text il motivo personalizzato
-     * @throws TextLengthException se la lunghezza del motivo text supera i 70 caratteri (costante MAX_CUSTOM_TEXT_LENGTH)
+     * @throws TextLengthException se la lunghezza del motivo text supera i 70 caratteri (MAX_CUSTOM_TEXT_LENGTH)
+     * @modifies this.reports
+     * @effects report(this.reports[custom]) = pre(this.reports[custom] = text)
      */
     void setCustomReport(String text) throws TextLengthException;
 
@@ -42,6 +46,8 @@ public interface ReportInterface {
     /**
      * Imposta manualmente i motivi della segnalazione del post
      * @param reports mappa contenente i motivi della segnalazione
+     * @modifies this.reports
+     * @effects report(this.reports) = reports
      */
     void setReports(Map<ReportReason, Integer> reports);
 

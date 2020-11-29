@@ -28,8 +28,8 @@ public class Report implements ReportInterface {
      *  REPRESENTATION INVARIANT:
      *      post_id > 0 &&
      *      reports != null &&
-     *      reports.Entry<"custom", 1> = true =>
-     *              custom_report != null && custom_report.length() <= MAX_CUSTOM_TEXT_LENGTH
+     *      if reports.Entry<"custom", 1> == true then
+     *              custom_report != null && custom_report.length() <= MAX_CUSTOM_TEXT_LENGTH &&
      */
 
     private final int post_id;
@@ -67,7 +67,7 @@ public class Report implements ReportInterface {
      * Crea una mappa con tutti i motivi di default della segnalazione impostati a 0
      * @return map con tutti i motivi impostati
      */
-    static Map<ReportReason, Integer> getDefaultReports() {
+    private static Map<ReportReason, Integer> getDefaultReports() {
         Map<ReportReason, Integer> mappa = new HashMap<>();
 
         mappa.put(ReportReason.violent_content, 0);
@@ -85,6 +85,8 @@ public class Report implements ReportInterface {
     /**
      * Imposta il motivo della segnalazione specificato ad 1
      * @param type il tipo di segnalazione che si vuole impostare
+     * @modifies this.reports
+     * @effects report(this.reports) = pre(this.reports[type] = 1)
      */
     public void setReport(ReportReason type) {
         if(type == ReportReason.custom) {
@@ -97,7 +99,9 @@ public class Report implements ReportInterface {
     /**
      * Imposta un motivo della segnalazione custom
      * @param text il motivo personalizzato
-     * @throws TextLengthException se la lunghezza del motivo text supera i 70 caratteri (costante MAX_CUSTOM_TEXT_LENGTH)
+     * @throws TextLengthException se la lunghezza del motivo text supera i 70 caratteri (MAX_CUSTOM_TEXT_LENGTH)
+     * @modifies this.reports
+     * @effects report(this.reports[custom]) = pre(this.reports[custom] = text)
      */
     public void setCustomReport(String text) throws TextLengthException {
         if(text.length() > MAX_CUSTOM_TEXT_LENGTH) {
@@ -141,6 +145,8 @@ public class Report implements ReportInterface {
     /**
      * Imposta manualmente i motivi della segnalazione del post
      * @param reports mappa contenente i motivi della segnalazione
+     * @modifies this.reports
+     * @effects report(this.reports) = reports
      */
     public void setReports(Map<ReportReason, Integer> reports) {
         this.reports = reports;

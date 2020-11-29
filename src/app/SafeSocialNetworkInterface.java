@@ -14,6 +14,11 @@ public interface SafeSocialNetworkInterface {
      * @param post il post da segnalare
      * @param reason il motivo di segnalazione del post
      * @throws PostNotFoundException se il post specificato non è nella lista dei post nel social network
+     * @modifies this.rp
+     * @effects if !not_found({post}, safesocialnetwork(this.rp)) then
+     *      safesocialnetwork(this.rp) = pre(safesocialnetwork(this.rp)) U {post}
+     *  else
+     *      safesocialnetwork(this.rp[{post}]) = pre(safesocialnetwork(this.rp[{post}].add(reason)))
      */
     void reportPost(Post post, ReportReason reason) throws PostNotFoundException;
 
@@ -23,6 +28,11 @@ public interface SafeSocialNetworkInterface {
      * @param reason il motivo di segnalazione del post (deve essere per forza "custom" con questo metodo)
      * @param text il motivo personalizzato
      * @throws PostNotFoundException se il post specificato non è nella lista dei post nel social network
+     * @modifies this.rp
+     * @effects if !not_found({post}, safesocialnetwork(this.rp)) then
+     *      safesocialnetwork(this.rp) = pre(safesocialnetwork(this.rp)) U {post}
+     *  else
+     *      safesocialnetwork(this.rp[{post}]) = pre(safesocialnetwork(this.rp[{post}].add(reason)))
      */
     void reportPost(Post post, ReportReason reason, String text) throws PostNotFoundException, TextLengthException;
 
@@ -51,6 +61,9 @@ public interface SafeSocialNetworkInterface {
     /**
      * Elimina tutti i post con almeno 1 segnalazione
      * @return il numero di post rimossi
+     * @modifies this.rp
+     * @effects if this.rp[i].getReports() > 1 then
+     *      this.rp = pre(this.rp) \ {this.rp[i]}
      */
     int removeReportedPosts() throws PostNotFoundException;
 
@@ -58,6 +71,9 @@ public interface SafeSocialNetworkInterface {
      * Elimina tutti i post con almeno minReports segnalazioni
      * @param minReports il numero di segnalazioni minime perché il post sia cancellato
      * @return il numero di post rimossi
+     * @modifies this.rp
+     * @effects if this.rp[i].getReports() > minReports then
+     *      this.rp = pre(this.rp) \ {this.rp[i]}
      */
     int removeReportedPosts(int minReports) throws PostNotFoundException;
 }

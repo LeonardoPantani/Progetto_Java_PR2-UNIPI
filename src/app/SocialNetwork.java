@@ -296,6 +296,11 @@ public class SocialNetwork implements SocialNetworkInterface {
      * @param username l'utente a cui viene aggiunto l'username da seguire
      * @param follower l'utente seguito da username
      * @throws UserNotFoundException se il parametro username non esiste
+     * @modifies this.followed
+     * @effects if followed.get(username) == null then
+     *              this.followed = pre(this.followed) U {Set<username, follower>}
+     *          else
+     *              this.followed = pre(this.followed.get(username).add(follower))
      */
     public void addFollower(String username, String follower) throws UserNotFoundException {
         if(checkUser(username)) {
@@ -318,6 +323,9 @@ public class SocialNetwork implements SocialNetworkInterface {
      * @param username l'utente a cui viene rimosso l'username seguito
      * @param follower l'utente seguito da username
      * @throws UserNotFoundException se il parametro username non esiste
+     * @modifies this.followed
+     * @effects if followed.get(username) != null then
+     *              this.followed = pre(this.followed.get(username).remove(follower))
      */
     public void removeFollower(String username, String follower) throws UserNotFoundException {
         if(checkUser(username)) {
@@ -335,6 +343,8 @@ public class SocialNetwork implements SocialNetworkInterface {
      * Inizializza un utente
      * @param username il nome dell'utente da creare
      * @param set il set di persone che username segue
+     * @modifies this.followed
+     * @effects this.followed = pre(this.followed) U {username, followers}
      */
     public void initializeUser(String username, Set<String> set) throws InvalidUsernameException {
         if(validateUsername(username)) {
@@ -345,6 +355,8 @@ public class SocialNetwork implements SocialNetworkInterface {
     /**
      * Aggiunge un post alla lista.
      * @param p il post da aggiungere
+     * @modifies this.ps
+     * @effects this.ps = pre(this.ps) U {p}
      */
     public void addPost(Post p) {
         ps.add(p);
@@ -353,6 +365,8 @@ public class SocialNetwork implements SocialNetworkInterface {
     /**
      * Elimina un post dalla lista.
      * @param p il post da rimuovere
+     * @modifies this.ps
+     * @effects this.ps = pre(this.ps) \ {p}
      */
     public void deletePost(Post p) {
         ps.remove(p);

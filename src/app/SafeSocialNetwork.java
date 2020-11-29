@@ -26,18 +26,19 @@ public class SafeSocialNetwork extends SocialNetwork implements SafeSocialNetwor
      *      che ne possiedono almeno una.
      *
      *  ABSTRACTION FUNCTION:
-     *      List<Report> rp dove:
+     *      Set<Report> rp dove:
      *          Report -> è un oggetto di tipo "Report"
      *
      *  REPRESENTATION INVARIANT:
-     *      rp != null
+     *      rp != null &&
+     *      for each(report) in rp : report != null && unique
      */
 
-    private final List<Report> rp;
+    private final Set<Report> rp;
 
     public SafeSocialNetwork() {
         super();
-        rp = new ArrayList<>();
+        rp = new HashSet<>();
     }
 
     /**
@@ -45,6 +46,11 @@ public class SafeSocialNetwork extends SocialNetwork implements SafeSocialNetwor
      * @param post il post da segnalare
      * @param reason il motivo di segnalazione del post
      * @throws PostNotFoundException se il post specificato non è nella lista dei post nel social network
+     * @modifies this.rp
+     * @effects if !not_found({post}, safesocialnetwork(this.rp)) then
+     *      safesocialnetwork(this.rp) = pre(safesocialnetwork(this.rp)) U {post}
+     *  else
+     *      safesocialnetwork(this.rp[{post}]) = pre(safesocialnetwork(this.rp[{post}].add(reason)))
      */
     public void reportPost(Post post, ReportReason reason) throws PostNotFoundException {
         if(post == null) {
@@ -70,6 +76,11 @@ public class SafeSocialNetwork extends SocialNetwork implements SafeSocialNetwor
      * @param reason il motivo di segnalazione del post (deve essere per forza "custom" con questo metodo
      * @param text il motivo personalizzato
      * @throws PostNotFoundException se il post specificato non è nella lista dei post nel social network
+     * @modifies this.rp
+     * @effects if !not_found({post}, safesocialnetwork(this.rp)) then
+     *      safesocialnetwork(this.rp) = pre(safesocialnetwork(this.rp)) U {post}
+     *  else
+     *      safesocialnetwork(this.rp[{post}]) = pre(safesocialnetwork(this.rp[{post}].add(reason)))
      */
     public void reportPost(Post post, ReportReason reason, String text) throws PostNotFoundException, TextLengthException {
         if(post == null) {
@@ -166,6 +177,9 @@ public class SafeSocialNetwork extends SocialNetwork implements SafeSocialNetwor
     /**
      * Elimina tutti i post con almeno 1 segnalazione
      * @return il numero di post rimossi
+     * @modifies this.rp
+     * @effects if this.rp[i].getReports() > 1 then
+     *      this.rp = pre(this.rp) \ {this.rp[i]}
      */
     public int removeReportedPosts() throws PostNotFoundException {
         int removeCount = 0;
@@ -187,6 +201,9 @@ public class SafeSocialNetwork extends SocialNetwork implements SafeSocialNetwor
      * Elimina tutti i post con almeno minReports segnalazioni
      * @param minReports il numero di segnalazioni minime perché il post sia cancellato
      * @return il numero di post rimossi
+     * @modifies this.rp
+     * @effects if this.rp[i].getReports() > minReports then
+     *      this.rp = pre(this.rp) \ {this.rp[i]}
      */
     public int removeReportedPosts(int minReports) throws PostNotFoundException {
         int removeCount = 0;
@@ -208,6 +225,9 @@ public class SafeSocialNetwork extends SocialNetwork implements SafeSocialNetwor
      * Elimina i report assegnati al post con id post_id dalla lista
      * @param post_id l'id del post da cui cancellare i report
      * @return la quantità di elementi rimossi
+     * @modifies this.rp
+     * @effects if this.rp.getID() == post_id then
+     *      this.rp = pre(this.rp) \ this.rp[post_id]
      */
     public int deleteReport(int post_id) {
         int removeCount = 0;
